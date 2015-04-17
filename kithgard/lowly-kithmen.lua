@@ -1,0 +1,8 @@
+local e = self:findNearestEnemy()
+self:attack(e)
+self:attack(e)
+e = self:findNearestEnemy()
+self:attack(e)
+self:attack(e)
+self:moveDown()
+self:moveRight(2)
