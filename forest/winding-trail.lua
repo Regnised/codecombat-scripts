@@ -1,0 +1,8 @@
+self:moveXY(36, 60)
+self:moveXY(56, 19)
+self:buildXY("fire-trap", 72, 27)
+self:moveXY(37, 13)
+self:moveXY(72, 59)
+self:moveXY(72, 63)
+self:moveXY(75, 63)
+self:moveXY(75, 59)
