@@ -1,58 +1,80 @@
 -- level 3
-function summonSoldier()
-    if self.gold > self:costOf("soldier") then
+-- using "bash", "move"
+sol = true
+function summonMinion()
+    if sol and self.gold >= self:costOf("soldier") then
         self:summon("soldier")
+        sol = false
+    elseif self.gold >= self:costOf("archer") then
+        self:summon("archer")
+        sol = true
     end
 end
-function distance2(x, y, e)
-    local dx, dy = e.pos.x - x, e.pos.y - y
-    return dx*dx+dy*dy
+function distance2(a, b)
+    local x, y = a.pos.x - b.pos.x, a.pos.y - b.pos.y
+    return x*x + y*y
 end
-function findNearestEnemy(x, y)
-    local xs = self:findEnemies()
-    if #xs > 0 then
-        local e, minDist = xs[1], distance2(x, y, xs[1])
-        for i = 1, #xs do
-            local d = distance2(x, y, xs[i])
-            if d < minDist then
-                e, minDist = xs[i], d
+function findClosest(t)
+    local es = self:findEnemies()
+    if #es == 0 then return nil end
+    local d, dmin = es[1], distance2(es[1], t)
+    for i = 2, #es do
+        local dis = distance2(es[i], t)
+        if dis < dmin then
+            d, dmin = es[i], dis
+        end
+    end
+    return d
+end
+function commandMinions()
+    local fs = self:findFriends()
+    local es = self:findEnemies()
+    if #es > 0 then
+        for i = 1, #fs do
+            self:command(fs[i], "attack", findClosest(fs[i]))
+        end
+    else
+        for i = 1, #fs do
+            if self:distanceTo(fs[i]) > 8 then
+                self:command(fs[i], "move", {x=self.pos.x, y=self.pos.y})
             end
         end
-        return e
-    else
-        return nil
     end
 end
-function commandSoldiers()
-    local xs = self:findFriends()
+
+function withinDist(xs, d)
+    local r = 0
     for i = 1, #xs do
-        local e = findNearestEnemy((xs[i].pos.x + self.pos.x)/2,
-                                   (xs[i].pos.y + self.pos.x)/2)
-        if e then
-            self:command(xs[i], "attack", e)
+        if self:distanceTo(xs[i]) <= d then
+            r = r + 1
         end
+    end
+    return r
+end
+
+function attack(e)
+    local es = self:findEnemies()
+    local d = self:distanceTo(e)
+    if d > 7 then
+        self:move({x=e.pos.x, y=e.pos.y})
+    elseif e.health > 66 and self:isReady("bash") then
+        self:bash(e)
+    else
+        self:attack(e)
     end
 end
 
 loop
-    e = self:findNearest(self:findEnemies())
     i = self:findNearest(self:findItems())
-    f = self:findFlag()
+    e = self:findNearest(self:findEnemies())
+    f = self:findFlag() 
     if f then
         self:pickUpFlag(f)
-    elseif i and self.health < self.maxHealth/2 then
+    elseif i and self.health < self.maxHealth/3 then
         self:moveXY(i.pos.x, i.pos.y)
     elseif e then
-        --d = self:distanceTo(e)
-        if e.health > 60 and self:isReady("bash") then
-            self:bash(e)
-        else
-            self:attack(e)
-        end
-    elseif self:isReady("power-up") then
-        self:powerUp()
+        attack(e)
     end
-    summonSoldier()
-    commandSoldiers()
+    summonMinion()
+    commandMinions()
 end
-

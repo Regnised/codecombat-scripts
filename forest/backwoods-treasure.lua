@@ -1,38 +1,36 @@
 -- level 2
--- boss star not allowed
--- using Great Sword, Steel Striker
-function fight(e)
-    if e.health >= 200 and self:isReady("power-up") then
-        self:powerUp()
-        self:attack(e)
-    elseif e.health > 60 and self:isReady("bash") then
+-- using "bash", "move"
+function attack(e)
+    local d = self:distanceTo(e)
+    if d > 8 then
+        self:move({x=e.pos.x, y=e.pos.y})
+    elseif e.health >= 100 and self:isReady("bash") then
         self:bash(e)
     else
         self:attack(e)
     end
 end
 
-self:moveXY(26, 34)
---self:moveXY(40, 28)
+function get(i)
+    self:move({x=i.pos.x, y=i.pos.y})
+end
 
 loop
     f = self:findFlag()
     e = self:findNearest(self:findEnemies())
     i = self:findNearest(self:findItems())
     if f then
-        self:moveXY(f.pos.x, f.pos.y)
         self:pickUpFlag(f)
     elseif e and i then
-        de = self:distanceTo(e)
-        di = self:distanceTo(i)
-        if de < di*2 then
-            fight(e)
+        d = self:distanceTo(e)
+        if d < self:distanceTo(i) and d < 8 then
+            attack(e)
         else
-            self:moveXY(i.pos.x, i.pos.y)
+            get(i)
         end
-    elseif e then
-        fight(e)
     elseif i then
-        self:moveXY(i.pos.x, i.pos.y)
+        get(i)
+    elseif e then
+        attack(e)
     end
 end
