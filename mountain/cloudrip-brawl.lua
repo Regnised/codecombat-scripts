@@ -1,4 +1,4 @@
--- level 2
+-- level 1
 -- using "bash", "move", "power-up"
 sol = true
 function summonMinion()
@@ -15,7 +15,7 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = notYak(self:findEnemies())
+    local es = self:findEnemies()
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -28,7 +28,7 @@ function findClosest(t)
 end
 function commandMinions()
     local fs = self:findFriends()
-    local es = notYak(self:findEnemies())
+    local es = self:findEnemies()
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
@@ -43,34 +43,36 @@ function commandMinions()
     end
 end
 
-
-function notYak(xs)
-    local r = {}
-    for i = 1, #xs do
-        if xs[i].type ~= "sand-yak" then
-            r[#r+1] = xs[i]
-        end
+function attack(e)
+    d = self:distanceTo(e)
+    if d > 8 then
+        self:move({x=e.pos.x, y=e.pos.y})
+    elseif e.health > 200 and self:isReady("bash") then
+        self:bash(e)
+    elseif e.health >= 100 and self:isReady("power-up") then
+        self:powerUp()
+        self:attack(e)
+    else
+        self:attack(e)
     end
-    return r
 end
 
 loop
     i = self:findNearest(self:findItems())
-    e = self:findNearest(notYak(self:findEnemies()))
+    e = self:findNearest(self:findEnemies())
     f = self:findFlag()
     if f then
         self:pickUpFlag(f)
+    elseif i and e then
+        if self:distanceTo(e) < self:distanceTo(i) then
+            attack(e)
+        else
+            self:move({x=i.pos.x, y=i.pos.y})
+        end
     elseif i then
         self:move({x=i.pos.x, y=i.pos.y})
     elseif e then
-        if e.health >= 200 and self:isReady("power-up") then
-            self:powerUp()
-            self:attack(e)
-        elseif e.health > 100 and self:isReady("bash") then
-            self:bash(e)
-        else
-            self:attack(e)
-        end
+        attack(e)
     end
     summonMinion()
     commandMinions()
