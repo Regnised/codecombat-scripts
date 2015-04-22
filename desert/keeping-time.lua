@@ -42,7 +42,7 @@ function commandMinions()
     else
         for i = 1, #fs do
             if self:distanceTo(fs[i]) > 8 then
-                self:command(fs[i], "move", {x=self.pos.x, y=self.pos.y})
+                self:command(fs[i], "move", self.pos)
             end
         end
     end
@@ -90,12 +90,12 @@ loop
         if de < di or phase == 2 then
             attack(e)
         else
-            self:move({x=i.pos.x, y=i.pos.y})
+            self:move(i.pos)
         end
     elseif e then
         attack(e)
     elseif i then
-        self:move({x=i.pos.x, y=i.pos.y})
+        self:move(i.pos)
     end
     summonMinion()
     commandMinions()

@@ -1,13 +1,4 @@
-function notYak(xs)
-    local r = {}
-    for i = 1, #xs do
-        if xs[i].type ~= "sand-yak" then
-            r[#r+1] = xs[i]
-        end
-    end
-    return r
-end
-
+-- level 2
 function distTo2(t, o)
     local dx, dy = t['x'] - o.pos.x, t['y'] - o.pos.y
     return dx*dx + dy*dy
@@ -32,7 +23,7 @@ function nearestSafeTele()
     for i = 1, 4 do
         local di = distTo2(tele[i], self)
         local emin = 4e4
-        local es = notYak(self:findEnemies())
+        local es = self:findEnemies()
         if #es > 0 then
             for j = 1, #es do
                 local dd = distTo2(tele[i], es[j])
@@ -52,7 +43,7 @@ function safeItems(xs)
     for i = 1, #xs do
         local di = distance2(xs[i], self)
         local emin = 4e4
-        local es = notYak(self:findEnemies())
+        local es = self:findEnemies()
         if #es > 0 then
             for j = 1, #es do
                 local dd = distance2(xs[i], es[j])
@@ -70,7 +61,7 @@ end
 
 loop
     local i = self:findNearest(safeItems(self:findItems()))
-    local e = self:findNearest(notYak(self:findEnemies()))
+    local e = self:findNearest(self:findEnemies())
     if i and e then
         local t = nearestSafeTele()
         if not t then
@@ -79,22 +70,21 @@ loop
         local de = self:distanceTo(e)
         local di = self:distanceTo(i)
         if di < de and de > 7 then
-            self:move({x=i.pos.x, y=i.pos.y})
+            self:move(i.pos)
         else
             if de <= 7 and self:isReady("bash") then
                 self:bash(e)
             else
-                self:move({x=t['x'], y=t['y']})
+                self:move(t)
             end
         end
     elseif i then
-        self:move({x=i.pos.x, y=i.pos.y})
+        self:move(i.pos)
     elseif e then
         local t = nearestSafeTele()
         if not t then
             t = nearestTele()
         end
-        self:move({x=t['x'], y=t['y']})
+        self:move(t)
     end
 end
-

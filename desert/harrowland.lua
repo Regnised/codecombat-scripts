@@ -1,4 +1,4 @@
--- using Great Sword, Steel Striker
+-- using "bash", "move", "power-up"
 function notYak(xs)
     local r = {}
     for i = 1, #xs do
@@ -46,7 +46,7 @@ function commandMinions()
     else
         for i = 1, #fs do
             if self:distanceTo(fs[i]) > 8 then
-                self:command(fs[i], "move", {x=self.pos.x, y=self.pos.y})
+                self:command(fs[i], "move", self.pos)
             end
         end
     end
@@ -55,7 +55,7 @@ end
 function attack(e)
     d = self:distanceTo(e)
     if d > 10 then
-        self:move({x=e.pos.x, y=e.pos.y})
+        self:move(e.pos)
     elseif e.health > 200 and self:isReady("bash") then
         self:bash(e)
     elseif e.health >= 100 and self:isReady("power-up") then
@@ -73,7 +73,7 @@ loop
     if f then
         self:pickUpFlag(f)
     elseif i then
-        self:move({x=i.pos.x, y=i.pos.y})
+        self:move(i.pos)
     elseif e then
         attack(e)
     end

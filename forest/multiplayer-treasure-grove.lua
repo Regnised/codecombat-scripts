@@ -15,10 +15,10 @@ loop
                 self:attack(e)
             end
         else
-            self:move({x=i.pos.x, y=i.pos.y})
+            self:move(i.pos)
         end
     elseif i then
-        self:move({x=i.pos.x, y=i.pos.y})
+        self:move(i.pos)
     elseif e then
         self:attack(e)
     end

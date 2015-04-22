@@ -36,7 +36,7 @@ function commandMinions()
     else
         for i = 1, #fs do
             if self:distanceTo(fs[i]) > 8 then
-                self:command(fs[i], "move", {x=self.pos.x, y=self.pos.y})
+                self:command(fs[i], "move", self.pos)
             end
         end
     end
@@ -56,7 +56,7 @@ function attack(e)
     local es = self:findEnemies()
     local d = self:distanceTo(e)
     if d > 7 then
-        self:move({x=e.pos.x, y=e.pos.y})
+        self:move(e.pos)
     elseif e.health > 66 and self:isReady("bash") then
         self:bash(e)
     else
@@ -67,11 +67,11 @@ end
 loop
     i = self:findNearest(self:findItems())
     e = self:findNearest(self:findEnemies())
-    f = self:findFlag() 
+    f = self:findFlag()
     if f then
         self:pickUpFlag(f)
     elseif i and self.health < self.maxHealth/3 then
-        self:moveXY(i.pos.x, i.pos.y)
+        self:move(i.pos)
     elseif e then
         attack(e)
     end

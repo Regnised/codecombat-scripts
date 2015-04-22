@@ -1,18 +1,18 @@
--- level 2
--- using "bash", "move"
+-- level 3
+-- using "bash", "move", "power-up"
 function attack(e)
     local d = self:distanceTo(e)
     if d > 8 then
-        self:move({x=e.pos.x, y=e.pos.y})
+        if e.health > 100 and not self:hasEffect("power-up") and self:isReady("power-up") then
+            self:powerUp()
+        else
+            self:move(e.pos)
+        end
     elseif e.health >= 100 and self:isReady("bash") then
         self:bash(e)
     else
         self:attack(e)
     end
-end
-
-function get(i)
-    self:move({x=i.pos.x, y=i.pos.y})
 end
 
 loop
@@ -26,10 +26,10 @@ loop
         if d < self:distanceTo(i) and d < 8 then
             attack(e)
         else
-            get(i)
+            self:move(i.pos)
         end
     elseif i then
-        get(i)
+        self:move(i.pos)
     elseif e then
         attack(e)
     end

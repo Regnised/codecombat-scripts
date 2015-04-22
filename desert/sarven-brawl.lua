@@ -32,12 +32,16 @@ function commandMinions()
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
-            self:command(fs[i], "attack", e)
+            if self:distanceTo(fs[i]) < 15 then
+                self:command(fs[i], "attack", e)
+            else
+                self:command(fs[i], "move", self.pos)
+            end
         end
     else
         for i = 1, #fs do
             if self:distanceTo(fs[i]) > 8 then
-                self:command(fs[i], "move", {x=self.pos.x, y=self.pos.y})
+                self:command(fs[i], "move", self.pos)
             end
         end
     end
@@ -61,11 +65,15 @@ loop
     if f then
         self:pickUpFlag(f)
     elseif i then
-        self:move({x=i.pos.x, y=i.pos.y})
+        self:move(i.pos)
     elseif e then
-        if e.health >= 200 and self:isReady("power-up") then
-            self:powerUp()
-            self:attack(e)
+        d = self:distanceTo(e)
+        if d > 10 then
+            if e.health >= 150 and not self:hasEffect("power-up") and self:isReady("power-up") then
+                self:powerUp()
+            else
+                self:move(e.pos)
+            end
         elseif e.health > 100 and self:isReady("bash") then
             self:bash(e)
         else
