@@ -15,8 +15,10 @@ function commandMinions()
             local es = self:findEnemies()
             if #es > 0 then
                 self:command(fs[i], "attack", es[1])
-            else
-                self:command(fs[i], "move", {x=63, y=46})
+            elseif fs[i].type == "archer" then
+                self:command(fs[i], "move", {x=60, y=fs[i].pos.y})
+            elseif fs[i].type == "soldier" then
+                self:command(fs[i], "move", {x=65, y=fs[i].pos.y})
             end
         end
     end
