@@ -1,5 +1,5 @@
 base = {x=50, y=40}
-while self.gold > self:costOf("soldier") do
+while self.gold >= self:costOf("soldier") do
     self:summon("soldier")
 end
 
