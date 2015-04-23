@@ -1,3 +1,5 @@
+mathpi = 3.1415927
+
 local peasant = self:findByType("peasant")[1]
 function summonSoldier()
     if self.gold >= self:costOf("soldier") then
@@ -16,7 +18,7 @@ function findSoldierOffset(xs, i)
 end
 
 function radial2cart(r, degr)
-    local radi = 3.1415927 * degr / 180
+    local radi = mathpi * degr / 180
     return {x=r * math.cos(radi), y=r * math.sin(radi)} 
 end
 

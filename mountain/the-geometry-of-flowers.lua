@@ -1,3 +1,4 @@
+mathpi = 3.1415927
 -- toggleFlowers(true/false) - turns flowers on or off.
 -- setFlowerColor("random") - can also be "pink", "red", "blue", "purple", "yellow", or "white".
 
@@ -6,7 +7,7 @@ function drawCircle(x, y, size)
     self:toggleFlowers(false)
     self:moveXY(x, y)
     self:toggleFlowers(true)
-    while angle <= 3.1415927 * 2 do
+    while angle <= mathpi * 2 do
         newX = self.pos.x + (size * math.cos(angle))
         newY = self.pos.y + (size * math.sin(angle))
         self:move({x=newX, y=newY})

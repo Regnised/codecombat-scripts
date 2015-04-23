@@ -1,5 +1,6 @@
 mathpi = 3.1415927
 
+local l = self:findByType("librarian")[1]
 sol = true
 function summonMinion()
     if sol and self.gold >= self:costOf("soldier") then
@@ -13,7 +14,7 @@ end
 function commandSoldiers(xs)
     for i = 1, #xs do
         local angle = mathpi * 2 * i / #xs
-        local defPos = {x=41+10 * math.cos(angle), y=40+10 * math.sin(angle)}
+        local defPos = {x=l.pos.x+10 * math.cos(angle), y=l.pos.y+10 * math.sin(angle)}
         self:command(xs[i], "defend", defPos)
     end
 end
@@ -37,7 +38,7 @@ function commandArchers(xs)
                 self:command(xs[i], "attack", e)
             else
         local angle = mathpi * 2 * i / #xs
-            local defPos = {x=41+5 * math.cos(angle), y=40+5 * math.sin(angle)}
+            local defPos = {x=l.pos.x+5 * math.cos(angle), y=l.pos.y+5 * math.sin(angle)}
             self:command(xs[i], "move", defPos)
             end
         end
