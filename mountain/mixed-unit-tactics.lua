@@ -26,10 +26,10 @@ function findClosest(t)
 end
 
 function pickUpCoin()
-    i = self:findNearest(self:findItems())
-    e = self:findNearest(self:findEnemies())
+    local i = self:findNearest(self:findItems())
+    local e = self:findNearest(self:findEnemies())
     if e and i then
-        di, de = self:distanceTo(i), self:distanceTo(e)
+        local di, de = self:distanceTo(i), self:distanceTo(e)
         if de < di and de <= 7 then
             if self:isReady("bash") then
                 self:bash(e)
@@ -58,7 +58,7 @@ end
 loop
     pickUpCoin()
     summonMinion()
-    fs = self:findFriends()
+    local fs = self:findFriends()
     for i = 1, #fs do
         if fs[i].type == "soldier" then
             commandS(fs[i])

@@ -19,7 +19,7 @@ end
 
 function radial2cart(r, degr)
     local radi = mathpi * degr / 180
-    return {x=r * math.cos(radi), y=r * math.sin(radi)} 
+    return {x=r * math.cos(radi), y=r * math.sin(radi)}
 end
 
 loop

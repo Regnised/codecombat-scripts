@@ -1,6 +1,6 @@
 -- using Long Sword, Steel Striker
 function pickUpNearestCoin()
-    i = self:findNearest(self:findItems())
+    local i = self:findNearest(self:findItems())
     if i then
         self:moveXY(i.pos.x, i.pos.y)
     end
@@ -22,14 +22,14 @@ function commandSoldiers()
 end
 
 loop
-    e = self:findNearest(self:findEnemies())
-    i = self:findNearest(self:findItems())
-    f = self:findFlag()
+    local e = self:findNearest(self:findEnemies())
+    local i = self:findNearest(self:findItems())
+    local f = self:findFlag()
     if f then
         self:pickUpFlag(f)
     elseif e and i then
-        de = self:distanceTo(e)
-        di = self:distanceTo(i)
+        local de = self:distanceTo(e)
+        local di = self:distanceTo(i)
         if de < di and self:isReady("cleave") then
             self:cleave(e)
         elseif de < di and self:isReady("bash") then

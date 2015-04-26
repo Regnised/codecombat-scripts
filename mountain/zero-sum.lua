@@ -1,3 +1,13 @@
+function notYeti(xs)
+    local r = {}
+    for i = 1, #xs do
+        if xs[i].type ~= "yeti" then
+            r[#r+1] = xs[i]
+        end
+    end
+    return r
+end
+
 mini = 1
 function summonMinion()
     if mini == 1 and self.gold >= self:costOf("soldier") then
@@ -16,7 +26,7 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = self:findEnemies()
+    local es = notYeti(self:findEnemies())
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -28,14 +38,12 @@ function findClosest(t)
     return d
 end
 function commandMinions()
-    local fs = self:findFriends()
-    local es = self:findEnemies()
+    local fs = notYeti(self:findFriends())
+    local es = notYeti(self:findEnemies())
     if #es > 0 then
         for i = 1, #fs do
-            if fs[i].type ~= "yeti" then
-                local e = findClosest(fs[i])
-                self:command(fs[i], "attack", e)
-            end
+            local e = findClosest(fs[i])
+            self:command(fs[i], "attack", e)
         end
     else
         for i = 1, #fs do
@@ -47,8 +55,8 @@ function commandMinions()
 end
 
 loop
-    local e = self:findNearest(self:findEnemies())
-    local i = self:findNearest(self:findItems())
+    local e = self:findNearest(notYeti(self:findEnemies()))
+    local i = self:findNearest(notYeti(self:findItems()))
     if e and i then
         local di = self:distanceTo(i)
         local de = self:distanceTo(e)
@@ -58,7 +66,9 @@ loop
                 n = nil
             end
         end
-        if e.health > 300 and de <= 25 and self:isReady("fear") then
+        if self.health < self.maxHealth and de <= 15 and e.health <= 18.4 and self:isReady("drain-life") then
+            self:cast("drain-life", e)
+        elseif e.health > 200 and de <= 25 and self:isReady("fear") then
             self:cast("fear", e)
         elseif de < di then
             self:attack(e)

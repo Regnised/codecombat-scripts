@@ -1,14 +1,14 @@
 loop
-    fs = self:findFriends()
+    local fs = self:findFriends()
     for i = 1, #fs do
-        e = self:findNearest(fs[i]:findEnemies())
+        local e = self:findNearest(fs[i]:findEnemies())
         if e then
             self:command(fs[i], "attack", e)
         elseif (self:now() > 2  and fs[i].type == "soldier") or (self:now() > 3.5  and fs[i].type == "archer") then
             self:command(fs[i], "move", {x=fs[i].pos.x + 3, y=fs[i].pos.y})
         end
     end
-    e = self:findNearest(self:findEnemies())
+    local e = self:findNearest(self:findEnemies())
     if e then
         self:attack(e)
     else

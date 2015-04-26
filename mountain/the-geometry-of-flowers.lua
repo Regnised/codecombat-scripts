@@ -8,8 +8,8 @@ function drawCircle(x, y, size)
     self:moveXY(x, y)
     self:toggleFlowers(true)
     while angle <= mathpi * 2 do
-        newX = self.pos.x + (size * math.cos(angle))
-        newY = self.pos.y + (size * math.sin(angle))
+        local newX = self.pos.x + (size * math.cos(angle))
+        local newY = self.pos.y + (size * math.sin(angle))
         self:move({x=newX, y=newY})
         angle = angle + 0.2
     end

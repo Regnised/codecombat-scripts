@@ -82,7 +82,7 @@ loop
     if f then
         self:pickUpFlag(f)
     elseif i then
-        self:move({x=i.pos.x, y=i.pos.y})
+        self:move(i.pos)
     elseif e then
         local ca = closestArcher() 
         local ri = rightmost(self:findFriends())
