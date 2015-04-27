@@ -1,4 +1,4 @@
--- using Long Sword, The Monolith
+-- using "bash", "cleave"
 function notYak(xs)
     local r = {}
     for i = 1, #xs do
@@ -20,7 +20,6 @@ function withinDist(xs, d)
 end
 
 function attack(e)
-    local es = notYak(self:findEnemies())
     if e.health > 66 and self:isReady("bash") then
         self:bash(e)
     elseif withinDist(es, 10) > 2 and self:isReady("cleave") then
@@ -31,7 +30,8 @@ function attack(e)
 end
 
 loop
-    e = self:findNearest(notYak(self:findEnemies()))
+    es = notYak(self:findEnemies())
+    local e = self:findNearest(es)
     if e then
         attack(e)
     else

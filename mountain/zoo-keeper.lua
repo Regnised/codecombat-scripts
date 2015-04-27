@@ -9,7 +9,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = self:findEnemies()
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -30,6 +29,7 @@ for i=1,4 do
 end
 
 loop
+    es = self:findEnemies()
     local friends = self:findFriends()
     for j=1,#friends do
         local point = points[j]

@@ -19,10 +19,9 @@ function commandSoldiers(xs)
     end
 end
 function mostHealthyEnemy()
-    local es = self:findEnemies()
-    local m, mh = nil, 0
+    local m, mh = nil, 15 -- at least more than 15
     for i = 1, #es do
-        if es[i].health > mh and es[i].health > 15 then
+        if es[i].health > mh then
             m, mh = es[i], es[i].health
         end
     end
@@ -33,7 +32,7 @@ function commandArchers(xs)
         if archerTarget then
             self:command(xs[i], "attack", archerTarget)
         else
-            local e = self:findNearest(self:findEnemies())
+            local e = self:findNearest(es)
             if e then
                 self:command(xs[i], "attack", e)
             else
@@ -48,6 +47,8 @@ end
 
 archerTarget = nil
 loop
+    summonMinion()
+    es = self:findEnemies()
     if not archerTarget then
         archerTarget = mostHealthyEnemy()
     else
@@ -55,7 +56,6 @@ loop
             archerTarget = mostHealthyEnemy()
         end
     end
-    summonMinion()
     commandSoldiers(self:findByType("soldier"))
     commandArchers(self:findByType("archer"))
 end

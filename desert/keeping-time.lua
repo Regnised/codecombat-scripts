@@ -16,7 +16,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = self:findEnemies()
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -29,7 +28,6 @@ function findClosest(t)
 end
 function commandMinions()
     local fs = minions(self:findFriends())
-    local es = notYak(self:findEnemies())
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
@@ -68,7 +66,7 @@ function notYak(xs)
 end
 
 function attack(e)
-    d = self:distanceTo(e)
+    local d = self:distanceTo(e)
     if e.health > 100 and self:isReady("bash") then
         self:bash(e)
     elseif d < 10 and self:isReady("cleave") then
@@ -82,11 +80,14 @@ loop
     if phase == 1 and self:now() > 30 then
         phase = 2
     end
-    e = self:findNearest(self:findEnemies())
-    i = self:findNearest(self:findItems())
+    summonMinion()
+    es = notYak(self:findEnemies())
+    commandMinions()
+    local e = self:findNearest(es)
+    local i = self:findNearest(self:findItems())
     if e and i then
-        de = self:distanceTo(e)
-        di = self:distanceTo(i)
+        local de = self:distanceTo(e)
+        local di = self:distanceTo(i)
         if de < di or phase == 2 then
             attack(e)
         else
@@ -97,6 +98,4 @@ loop
     elseif i then
         self:move(i.pos)
     end
-    summonMinion()
-    commandMinions()
 end

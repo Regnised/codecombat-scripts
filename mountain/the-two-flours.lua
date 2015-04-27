@@ -1,4 +1,4 @@
--- using Long Sword, Steel Striker
+-- using "bash", "cleave"
 
 -- If the peasant is damaged, the flowers will shrink!
 local p = self:findByType("peasant")[1]
@@ -13,7 +13,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = self:findEnemies()
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -26,7 +25,6 @@ function findClosest(t)
 end
 function commandSoldiers()
     local fs = self:findByType("soldier")
-    local es = self:findEnemies()
     if #es > 0 then
         for i = 1, #fs do
             self:command(fs[i], "attack", findClosest(fs[i]))
@@ -36,7 +34,7 @@ end
 
 function pickUpNearestCoin()
     local i = self:findNearest(self:findItems())
-    local e = self:findNearest(self:findEnemies())
+    local e = self:findNearest(es)
     if e and i then
         if self:distanceTo(e) < self:distanceTo(i) then
             if self:isReady("bash") then
@@ -44,18 +42,19 @@ function pickUpNearestCoin()
             elseif self:isReady("cleave") then
                 self:cleave(e)
             else
-                self:moveXY(i.pos.x, i.pos.y)
+                self:move(i.pos)
             end
         else
-            self:moveXY(i.pos.x, i.pos.y)
+            self:move(i.pos)
         end
     elseif i then
-        self:moveXY(i.pos.x, i.pos.y)
+        self:move(i.pos)
     end
 end
 
 loop
     summonSoldiers()
+    es = self:findEnemies()
     commandSoldiers()
     pickUpNearestCoin()
 end

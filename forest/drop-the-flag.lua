@@ -1,15 +1,14 @@
+function pos2xy(pos) return pos['x'], pos['y'] end
+
 loop
     local flag = self:findFlag()
     if flag then
         self:pickUpFlag(flag)
-        self:buildXY("fire-trap", flag.pos.x, flag.pos.y)
+        self:buildXY("fire-trap", pos2xy(flag.pos))
     else
         local item = self:findNearestItem()
         if item then
-            local itemPos = item.pos
-            local x = itemPos.x
-            local y = itemPos.y
-            self:moveXY(x, y)
+            self:moveXY(pos2xy(item.pos))
         end
     end
 end

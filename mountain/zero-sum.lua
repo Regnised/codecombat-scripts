@@ -26,7 +26,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = notYeti(self:findEnemies())
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -38,8 +37,7 @@ function findClosest(t)
     return d
 end
 function commandMinions()
-    local fs = notYeti(self:findFriends())
-    local es = notYeti(self:findEnemies())
+    local fs = self:findFriends()
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
@@ -55,8 +53,11 @@ function commandMinions()
 end
 
 loop
-    local e = self:findNearest(notYeti(self:findEnemies()))
-    local i = self:findNearest(notYeti(self:findItems()))
+    summonMinion()
+    es = notYeti(self:findEnemies())
+    commandMinions()
+    local e = self:findNearest(es)
+    local i = self:findNearest(self:findItems())
     if e and i then
         local di = self:distanceTo(i)
         local de = self:distanceTo(e)
@@ -84,6 +85,4 @@ loop
     elseif e then
         self:attack(e)
     end
-    summonMinion()
-    commandMinions()
 end

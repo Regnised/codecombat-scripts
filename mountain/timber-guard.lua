@@ -9,10 +9,10 @@ function summonMinion()
     end
 end
 function commandMinions()
+    local es = self:findEnemies()
     local fs = self:findFriends()
     for i = 1, #fs do
         if fs[i].type == "archer" or fs[i].type == "soldier" then
-            local es = self:findEnemies()
             if #es > 0 then
                 self:command(fs[i], "attack", es[1])
             elseif fs[i].type == "archer" then
@@ -35,12 +35,12 @@ function inView(xs)
 end
 
 loop
+    summonMinion()
+    commandMinions()
     local i = self:findNearest(inView(self:findItems()))
     if i then
         self:move(i.pos)
     else
         self:move({x=23, y=42})
     end
-    summonMinion()
-    commandMinions()
 end

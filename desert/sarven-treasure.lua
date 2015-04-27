@@ -23,7 +23,6 @@ function nearestSafeTele()
     for i = 1, 4 do
         local di = distTo2(tele[i], self)
         local emin = 4e4
-        local es = self:findEnemies()
         if #es > 0 then
             for j = 1, #es do
                 local dd = distTo2(tele[i], es[j])
@@ -43,7 +42,6 @@ function safeItems(xs)
     for i = 1, #xs do
         local di = distance2(xs[i], self)
         local emin = 4e4
-        local es = self:findEnemies()
         if #es > 0 then
             for j = 1, #es do
                 local dd = distance2(xs[i], es[j])
@@ -60,8 +58,9 @@ function safeItems(xs)
 end
 
 loop
+    es = self:findEnemies()
     local i = self:findNearest(safeItems(self:findItems()))
-    local e = self:findNearest(self:findEnemies())
+    local e = self:findNearest(es)
     if i and e then
         local t = nearestSafeTele()
         if not t then

@@ -15,7 +15,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = self:findEnemies()
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -28,7 +27,6 @@ function findClosest(t)
 end
 function commandMinions()
     local fs = self:findFriends()
-    local es = self:findEnemies()
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
@@ -59,7 +57,10 @@ end
 
 loop
     local i = self:findNearest(self:findItems())
-    local e = self:findNearest(self:findEnemies())
+    summonMinion()
+    es = self:findEnemies()
+    commandMinions()
+    local e = self:findNearest(es)
     local f = self:findFlag()
     if f then
         self:pickUpFlag(f)
@@ -74,6 +75,4 @@ loop
     elseif e then
         attack(e)
     end
-    summonMinion()
-    commandMinions()
 end

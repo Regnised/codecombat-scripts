@@ -9,15 +9,6 @@ function attack(e)
     end
 end
 
-function waitsome()
-    loop
-        if #self:findEnemies() > 0 then
-            break
-        else
-            self:wait(0.1)
-        end
-    end
-end
 function finishthem()
     local g = false
     while #self:findEnemies() > 0 do
@@ -35,7 +26,7 @@ function collectStuff()
     loop
         i = self:findNearest(self:findItems())
         if not i then break end
-        self:move(i.pos, i.pos)
+        self:move(i.pos)
     end
 end
 function relocateTo(x, y)

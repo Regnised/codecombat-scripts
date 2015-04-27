@@ -16,7 +16,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = self:findEnemies()
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -28,10 +27,10 @@ function findClosest(t)
     return d
 end
 function commandMinions()
-    fs = self:findFriends()
+    local fs = self:findFriends()
     for i = 1, #fs do
         if fs[i].type == "archer" or fs[i].type == "soldier" or fs[i].type == "griffin-rider" then
-            local es = notYak(self:findEnemies())
+            -- ugh, "defend" will attack sand-yaks as well ...
             if fs[i].type == "griffin-rider" then
                 self:command(fs[i], "defend", {x=56, y=fs[i].pos.y})
             elseif fs[i].type == "archer" then
@@ -64,27 +63,29 @@ function rightmost(xs)
     return r
 end
 function closestArcher()
-    local xs = self:findEnemies()
     local r, dr = nil, 4e4
-    for i = 1, #xs do
-        if (xs[i].type == "archer" or xs[i].type == "shaman") and self:distanceTo(xs[i]) < dr then
-            r = xs[i]
-            dr = self:distanceTo(xs[i])
+    for i = 1, #es do
+        if (es[i].type == "archer" or es[i].type == "shaman") and self:distanceTo(es[i]) < dr then
+            r = es[i]
+            dr = self:distanceTo(es[i])
         end
     end
     return r
 end
 
 loop
-    i = self:findNearest(self:findItems())
-    e = self:findNearest(notYak(self:findEnemies()))
-    f = self:findFlag()
+    local i = self:findNearest(self:findItems())
+    summonMinion()
+    es = notYak(self:findEnemies())
+    commandMinions()
+    local e = self:findNearest(es)
+    local f = self:findFlag()
     if f then
         self:pickUpFlag(f)
     elseif i then
         self:move(i.pos)
     elseif e then
-        local ca = closestArcher() 
+        local ca = closestArcher()
         local ri = rightmost(self:findFriends())
         if ri and self.health < 50 then
             self:move({x=ri.pos.x - 15, y=self.pos.y})
@@ -101,6 +102,4 @@ loop
             self:attack(e)
         end
     end
-    summonMinion()
-    commandMinions()
 end

@@ -1,3 +1,5 @@
+function pos2xy(pos) return pos['x'], pos['y'] end
+
 loop
     local flagGreen = self:findFlag("green")
     local flagBlack = self:findFlag("black")
@@ -5,10 +7,10 @@ loop
 
     if flagGreen then
         self:pickUpFlag(flagGreen)
-        self:buildXY("fence", flagGreen.pos.x, flagGreen.pos.y)
+        self:buildXY("fence", pos2xy(flagGreen.pos))
     elseif flagBlack then
         self:pickUpFlag(flagBlack)
-        self:buildXY("fire-trap", flagBlack.pos.x, flagBlack.pos.y)
+        self:buildXY("fire-trap", pos2xy(flagBlack.pos))
     elseif flagViolet then
         self:pickUpFlag(flagViolet)
     end

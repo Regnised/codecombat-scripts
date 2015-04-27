@@ -15,7 +15,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = notYak(self:findEnemies())
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -28,7 +27,6 @@ function findClosest(t)
 end
 function commandMinions()
     local fs = self:findFriends()
-    local es = notYak(self:findEnemies())
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
@@ -59,15 +57,18 @@ function notYak(xs)
 end
 
 loop
-    i = self:findNearest(self:findItems())
-    e = self:findNearest(notYak(self:findEnemies()))
-    f = self:findFlag()
+    local i = self:findNearest(self:findItems())
+    summonMinion()
+    es = notYak(self:findEnemies())
+    commandMinions()
+    local e = self:findNearest(es)
+    local f = self:findFlag()
     if f then
         self:pickUpFlag(f)
     elseif i then
         self:move(i.pos)
     elseif e then
-        d = self:distanceTo(e)
+        local d = self:distanceTo(e)
         if d > 10 then
             if e.health >= 150 and not self:hasEffect("power-up") and self:isReady("power-up") then
                 self:powerUp()
@@ -80,6 +81,4 @@ loop
             self:attack(e)
         end
     end
-    summonMinion()
-    commandMinions()
 end

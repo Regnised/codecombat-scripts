@@ -9,14 +9,17 @@ function notYak(xs)
     return r
 end
 
-sol = true
+mini = 1
 function summonMinion()
-    if sol and self.gold >= self:costOf("soldier") then
+    if mini == 1 and self.gold >= self:costOf("soldier") then
         self:summon("soldier")
-        sol = false
-    elseif self.gold >= self:costOf("archer") then
+        mini = 2
+    elseif mini == 2 and self.gold >= self:costOf("archer") then
         self:summon("archer")
-        sol = true
+        mini = 3
+    elseif mini == 3 and self.gold > self:costOf("griffin-rider") then
+        self:summon("griffin-rider")
+        mini = 1
     end
 end
 function distance2(a, b)
@@ -24,7 +27,6 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    local es = notYak(self:findEnemies())
     if #es == 0 then return nil end
     local d, dmin = es[1], distance2(es[1], t)
     for i = 2, #es do
@@ -37,7 +39,6 @@ function findClosest(t)
 end
 function commandMinions()
     local fs = self:findFriends()
-    local es = notYak(self:findEnemies())
     if #es > 0 then
         for i = 1, #fs do
             local e = findClosest(fs[i])
@@ -53,7 +54,7 @@ function commandMinions()
 end
 
 function attack(e)
-    d = self:distanceTo(e)
+    local d = self:distanceTo(e)
     if d > 10 then
         self:move(e.pos)
     elseif e.health > 200 and self:isReady("bash") then
@@ -67,9 +68,12 @@ function attack(e)
 end
 
 loop
-    i = self:findNearest(self:findItems())
-    e = self:findNearest(notYak(self:findEnemies()))
-    f = self:findFlag()
+    local i = self:findNearest(self:findItems())
+    summonMinion()
+    es = notYak(self:findEnemies())
+    commandMinions()
+    local e = self:findNearest(es)
+    local f = self:findFlag()
     if f then
         self:pickUpFlag(f)
     elseif i then
@@ -77,6 +81,4 @@ loop
     elseif e then
         attack(e)
     end
-    summonMinion()
-    commandMinions()
 end

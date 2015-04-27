@@ -1,4 +1,4 @@
--- using Long Sword, The Monolith
+-- using "bash", "cleave"
 function countWithin(xs, d)
     local r = 0
     for i = 1, #xs do
@@ -9,7 +9,6 @@ function countWithin(xs, d)
     return r
 end
 
--- Always take an action inside a while loop, or it'll go infinite!
 loop
     if countWithin(self:findEnemies(), 10) >= 10 then
         break
