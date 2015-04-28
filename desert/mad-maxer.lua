@@ -1,3 +1,4 @@
+-- using "bash"
 function attack(e)
     if e.health > 162 and self:isReady("bash") then
         self:bash(e)

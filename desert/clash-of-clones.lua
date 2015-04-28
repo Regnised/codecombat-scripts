@@ -16,9 +16,8 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    if #es == 0 then return nil end
-    local d, dmin = es[1], distance2(es[1], t)
-    for i = 2, #es do
+    local d, dmin = nil, 4e4
+    for i = 1, #es do
         local dis = distance2(es[i], t)
         if dis < dmin then
             d, dmin = es[i], dis
@@ -54,8 +53,8 @@ function notYak(xs)
 end
 
 function rightmost(xs)
-    local r, rmax = xs[1], xs[1].pos.x
-    for i = 2, #xs do
+    local r, rmax = nil, 0
+    for i = 1, #xs do
         if rmax < xs[i].pos.x then
             r, rmax = xs[i], xs[i].pos.x
         end

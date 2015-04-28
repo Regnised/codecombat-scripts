@@ -1,4 +1,4 @@
--- using Long Sword, The Monolith
+-- using "bash", "cleave"
 loop
     if 3 * self.health < self.maxHealth then
         self:moveXY(65, 46)

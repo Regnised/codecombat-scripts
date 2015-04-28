@@ -1,4 +1,4 @@
--- using Long Sword, Steel Striker
+-- using "bash", "cleave"
 loop
     local enemy = self:findNearest(self:findEnemies())
     local flag = self:findFlag()

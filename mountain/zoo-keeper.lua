@@ -9,9 +9,8 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    if #es == 0 then return nil end
-    local d, dmin = es[1], distance2(es[1], t)
-    for i = 2, #es do
+    local d, dmin = nil, 4e4
+    for i = 1, #es do
         local dis = distance2(es[i], t)
         if dis < dmin then
             d, dmin = es[i], dis
@@ -24,14 +23,14 @@ while self.gold < 4 * self:costOf("soldier") do
     local i = self:findNearest(self:findItems())
     self:move(i.pos)
 end
-for i=1,4 do
+for i = 1, 4 do
     self:summon("soldier")
 end
 
 loop
     es = self:findEnemies()
     local friends = self:findFriends()
-    for j=1,#friends do
+    for j = 1, #friends do
         local point = points[j]
         local friend = friends[j]
         local enemy = findClosest(friend)

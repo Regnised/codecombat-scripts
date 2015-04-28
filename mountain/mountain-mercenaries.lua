@@ -14,9 +14,8 @@ function distance2(a, b)
     return x*x + y*y
 end
 function findClosest(t)
-    if #es == 0 then return nil end
-    local d, dmin = es[1], distance2(es[1], t)
-    for i = 2, #es do
+    local d, dmin = nil, 4e4
+    for i = 1, #es do
         local dis = distance2(es[i], t)
         if dis < dmin then
             d, dmin = es[i], dis
