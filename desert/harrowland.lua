@@ -65,13 +65,34 @@ function attack(e)
         self:attack(e)
     end
 end
+function bestEnemy(xs)
+    local e, de = nil, 4e4
+    for i = 1, #xs do
+        local d = 4e4
+        if xs[i].type == "soldier" then
+            d = 3 * self:distanceTo(xs[i])
+        elseif xs[i].type == "archer" or xs[i].type == "griffin-rider" then
+            d = self:distanceTo(xs[i]) / 5
+        else
+            if self:isReady("bash") then
+                d = self:distanceTo(xs[i]) / 2
+            else
+                d = 3 * self:distanceTo(xs[i])
+            end
+        end
+        if d < de then
+            e, de = xs[i], d
+        end
+    end
+    return e
+end
 
 loop
     local i = self:findNearest(self:findItems())
     summonMinion()
     es = notYak(self:findEnemies())
     commandMinions()
-    local e = self:findNearest(es)
+    local e = bestEnemy(es)
     local f = self:findFlag()
     if f then
         self:pickUpFlag(f)
