@@ -1,0 +1,10 @@
+(def enemy1 "Kratt")
+(def enemy2 "Gert")
+(def enemy3 "Ursa")
+
+(.attack this enemy1)
+(.attack this enemy1)
+(.attack this enemy2)
+(.attack this enemy2)
+(.attack this enemy3)
+(.attack this enemy3)

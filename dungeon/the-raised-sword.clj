@@ -1,0 +1,6 @@
+(.attack this "Rig")
+(.attack this "Rig")
+(.attack this "Gurt")
+(.attack this "Gurt")
+(.attack this "Ack")
+(.attack this "Ack")
