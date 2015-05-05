@@ -11,7 +11,7 @@
   (def sideSteps (+ sideSteps ssn))
   (if (= (mod steps skip) 0)
     (def sideSteps (+ sideSteps ssn)))
-  (def steps (+ steps 1))
+  (def steps (inc steps))
   (if (> sideSteps slide)
     (def sideSteps (- sideSteps slide))
     (if (< sideSteps 1)
