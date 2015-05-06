@@ -1,0 +1,10 @@
+(while true
+  (def es (.findEnemies this))
+  (when (seq es)
+    (def i 0)
+    (while (> (count es) i)
+      (if (not= (.type (nth es i)) "sand-yak")
+        (while (> (.health (nth es i)) 0)
+          (.attack this (nth es i))))
+      (def i (inc i))))
+  (.move this (clj->js { :x 40, :y 32 })))

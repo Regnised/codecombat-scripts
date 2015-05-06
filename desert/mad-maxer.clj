@@ -1,0 +1,15 @@
+(while true
+  (def es (.findEnemies this))
+  (def e nil)
+  (when (seq es)
+    (def ed 0)
+    (def i 0)
+    (while (< i (count es))
+      (when (> (.distanceTo this (nth es i)) ed)
+        (def ed (.distanceTo this (nth es i)))
+        (def e (nth es i)))
+      (def i (inc i))))
+  (if e
+    (while (> (.health e) 0)
+      (.attack this e))
+    (.wait this 0.1)))
