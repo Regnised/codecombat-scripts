@@ -24,6 +24,16 @@ function findClosest(xs, t)
     end
     return d
 end
+function bestCoin(xs, t)
+    local r, maxR = nil, 0
+    for i = 1, #xs do
+        local v = xs[i].value/t:distanceTo(xs[i])
+        if v > maxR then
+            r, maxR = xs[i], v
+        end
+    end
+    return r
+end
 function remo(xs, b)
     local r = {}
     for i = 1, #xs do
@@ -41,7 +51,7 @@ function commandMinions()
                 local e = findClosest(es, fs[i])
                 self:command(fs[i], "attack", e)
             else
-                local b = findClosest(is, fs[i])
+                local b = bestCoin(is, fs[i])
                 if b then
                     self:command(fs[i], "move", b.pos)
                     is = remo(is, b)
