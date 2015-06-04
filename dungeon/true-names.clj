@@ -4,5 +4,4 @@
 (.moveRight this)
 (.attack this "Treg")
 (.attack this "Treg")
-(.moveRight this)
-(.moveRight this)
+(.moveRight this 2)

@@ -5,6 +5,5 @@
   (.attack this e)
   (.attack this e)
   (.moveRight this)
-  (.moveDown this)
-  (.moveDown this)
+  (.moveDown this 2)
   (.moveUp this))

@@ -1,5 +1,3 @@
 (dotimes [_ 3]
-  (.moveRight this)
-  (.moveRight this)
-  (.moveUp this)
-  (.moveUp this))
+  (.moveRight this 2)
+  (.moveUp this 2))
